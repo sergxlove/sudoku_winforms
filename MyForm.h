@@ -56,10 +56,12 @@ namespace sudokuwinforms {
 			// textBox1
 			// 
 			this->textBox1->BackColor = System::Drawing::Color::Wheat;
-			this->textBox1->Location = System::Drawing::Point(197, 151);
+			this->textBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->textBox1->Location = System::Drawing::Point(12, 22);
 			this->textBox1->Multiline = true;
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(503, 251);
+			this->textBox1->Size = System::Drawing::Size(911, 557);
 			this->textBox1->TabIndex = 0;
 			// 
 			// MyForm
@@ -78,20 +80,69 @@ namespace sudokuwinforms {
 
 		}
 #pragma endregion
+	array<int,2>^ swaping_rows(array<int,2>^ first_array,int poz_first_row,int poz_second_row)
+	{
+		int size = 9;
+		array<int>^ rows = gcnew array<int>(size);
+		array<int, 2>^ second_array = gcnew array<int, 2>(size, size);
+		second_array = first_array;
+		for (int i = 0;i < size;i++)
+		{
+			rows[i] = second_array[i, poz_first_row];
+		}
+		for (int i = 0;i < size;i++)
+		{
+			second_array[i, poz_first_row] = second_array[i, poz_second_row];
+		}
+		for (int i = 0;i < size;i++)
+		{
+			second_array[i, poz_second_row] = rows[i];
+		}
+		return second_array;
+	}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
-		int size = 3;
+		int size = 9;
+		int value = 1;
+		int count = 1;
+		int start_value = 1;
 		array<int, 2>^ field = gcnew array<int, 2>(size, size);
 		Random^ random = gcnew Random();
 		for (int i = 0;i < size;i++)
 		{
+			value = start_value;
 			for (int j = 0;j < size;j++)
 			{
-				field[i, j] = random->Next();
+				if (value == 10)
+				{
+					value = 1;
+				}
+				field[i, j] = value;
+				value++;
 				textBox1->Text += field[i, j];
-				textBox1->Text += " ";
+				textBox1->Text += "\t";
 			}
-			textBox1->Text += "\n";
-		}  
+			if (count == 3)
+			{
+				count = 1;
+				start_value -= 5;
+			}
+			else
+			{
+				start_value += 3;
+				count++;
+			}
+			textBox1->Text += "\r\n";
+		} 
+		field = swaping_rows(field, 0, 2);
+		for (int i = 0;i < size;i++)
+		{
+			for (int j = 0;j < size;j++)
+			{
+				textBox1->Text += field[i, j];
+				textBox1->Text += "\t";
+			}
+			textBox1->Text += "\r\n";
+		}
 	}
 	};
 }
