@@ -80,25 +80,108 @@ namespace sudokuwinforms {
 
 		}
 #pragma endregion
-	array<int,2>^ swaping_rows(array<int,2>^ first_array,int poz_first_row,int poz_second_row)
+	void swaping_rows(array<int, 2>^ &first_array, int poz_first_rows, int poz_second_rows)
+	{
+		int size = 9;
+		array<int>^ cols = gcnew array<int>(size);
+		for (int i = 0;i < size;i++)
+		{
+			cols[i] = first_array[poz_first_rows, i];
+		}
+		for (int i = 0;i < size;i++)
+		{
+			first_array[poz_first_rows, i] = first_array[poz_second_rows, i];
+		}
+		for (int i = 0;i < size;i++)
+		{
+			first_array[poz_second_rows, i] = cols[i];
+		}
+	}
+	void swaping_cols(array<int,2>^ &first_array,int poz_first_cols,int poz_second_cols)
 	{
 		int size = 9;
 		array<int>^ rows = gcnew array<int>(size);
-		array<int, 2>^ second_array = gcnew array<int, 2>(size, size);
-		second_array = first_array;
 		for (int i = 0;i < size;i++)
 		{
-			rows[i] = second_array[i, poz_first_row];
+			rows[i] = first_array[i, poz_first_cols];
 		}
 		for (int i = 0;i < size;i++)
 		{
-			second_array[i, poz_first_row] = second_array[i, poz_second_row];
+			first_array[i, poz_first_cols] = first_array[i, poz_second_cols];
 		}
 		for (int i = 0;i < size;i++)
 		{
-			second_array[i, poz_second_row] = rows[i];
+			first_array[i, poz_second_cols] = rows[i];
 		}
-		return second_array;
+	}
+	void sort_field(array<int, 2>^& first_array)
+	{
+		Random^ random = gcnew Random();
+		int first_poz = 0;
+		int second_poz = 0;
+		//0-2
+		for (int i = 0;i < 3;)
+		{
+			first_poz = random->Next(0, 3);
+			second_poz = random->Next(0, 3);
+			if (first_poz != second_poz)
+			{
+				swaping_rows(first_array, first_poz, second_poz);
+				i++;
+			}
+		}
+		for (int i = 0;i < 3;)
+		{
+			first_poz = random->Next(0, 3);
+			second_poz = random->Next(0, 3);
+			if (first_poz != second_poz)
+			{
+				swaping_cols(first_array, first_poz, second_poz);
+				i++;
+			}
+		}
+		//3-5
+		for (int i = 0;i < 3;)
+		{
+			first_poz = random->Next(3, 6);
+			second_poz = random->Next(3, 6);
+			if (first_poz != second_poz)
+			{
+				swaping_rows(first_array, first_poz, second_poz);
+				i++;
+			}
+		}
+		for (int i = 0;i < 3;)
+		{
+			first_poz = random->Next(3, 6);
+			second_poz = random->Next(3, 6);
+			if (first_poz != second_poz)
+			{
+				swaping_cols(first_array, first_poz, second_poz);
+				i++;
+			}
+		}
+		//6-8
+		for (int i = 0;i < 3;)
+		{
+			first_poz = random->Next(6, 9);
+			second_poz = random->Next(6, 9);
+			if (first_poz != second_poz)
+			{
+				swaping_rows(first_array, first_poz, second_poz);
+				i++;
+			}
+		}
+		for (int i = 0;i < 3;)
+		{
+			first_poz = random->Next(6, 9);
+			second_poz = random->Next(6, 9);
+			if (first_poz != second_poz)
+			{
+				swaping_cols(first_array, first_poz, second_poz);
+				i++;
+			}
+		}
 	}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		int size = 9;
@@ -132,8 +215,8 @@ namespace sudokuwinforms {
 				count++;
 			}
 			textBox1->Text += "\r\n";
-		} 
-		field = swaping_rows(field, 0, 2);
+		}
+		sort_field(field);
 		for (int i = 0;i < size;i++)
 		{
 			for (int j = 0;j < size;j++)
