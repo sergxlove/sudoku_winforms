@@ -129,6 +129,7 @@ namespace sudokuwinforms {
 	private: Label^ label_value;
 	private: Label^ label_color;
 	private: array<int, 2>^ arr_label;
+	private: array<bool, 2>^ array_visible;
 	private: int number_label;
 	private: int index = 0;
 	private: int poz_x = 99;
@@ -1734,6 +1735,33 @@ namespace sudokuwinforms {
 				swaping_cols(first_array, first_poz, second_poz);
 				i++;
 			}
+		}
+	}
+	void completoin_array_visible(array<bool,2>^ &arr)
+	{
+		Random^ random = gcnew Random();
+		int value = random->Next(0, 6);
+		if (value == 0)
+		{
+			arr = gcnew array<bool, 2>(9, 9)
+			{
+				{0, 1, 0, 0, 0, 1, 0, 1, 0},
+				{ 1,0,1,0,1,0,0,0,1 },
+				{ 0,1,0,0,0,1,0,0,0 },
+				{ 0,0,0,0,0,0,1,0,1 },
+				{ 0,1,0,0,0,0,0,1,0 },
+				{ 1,0,1,0,0,0,0,0,0 },
+				{ 0,0,0,1,0,0,0,1,0 },
+				{ 1,0,0,0,1,0,1,0,1 },
+				{ 0,1,0,1,0,0,0,1,0 },
+			};
+		}
+		if (value == 1)
+		{
+			arr = gcnew array<bool, 2>(9, 9)
+			{
+
+			};
 		}
 	}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
