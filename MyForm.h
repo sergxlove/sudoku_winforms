@@ -128,6 +128,9 @@ namespace sudokuwinforms {
 	private: Label^ label_field;
 	private: Label^ label_value;
 	private: Label^ label_color;
+	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Button^ button3;
 	private: array<int, 2>^ arr_label;
 	private: array<bool, 2>^ array_visible;
 	private: int number_label;
@@ -254,6 +257,9 @@ namespace sudokuwinforms {
 			this->label89 = (gcnew System::Windows::Forms::Label());
 			this->label90 = (gcnew System::Windows::Forms::Label());
 			this->label91 = (gcnew System::Windows::Forms::Label());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// label1
@@ -1528,6 +1534,53 @@ namespace sudokuwinforms {
 			this->label91->TabIndex = 90;
 			this->label91->Text = L"sudoku";
 			// 
+			// button1
+			// 
+			this->button1->BackColor = System::Drawing::Color::Gray;
+			this->button1->FlatAppearance->BorderSize = 0;
+			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button1->ForeColor = System::Drawing::SystemColors::Window;
+			this->button1->Location = System::Drawing::Point(870, 761);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(266, 75);
+			this->button1->TabIndex = 91;
+			this->button1->Text = L"Стереть";
+			this->button1->UseVisualStyleBackColor = false;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
+			// 
+			// button2
+			// 
+			this->button2->BackColor = System::Drawing::Color::Gray;
+			this->button2->FlatAppearance->BorderSize = 0;
+			this->button2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button2->ForeColor = System::Drawing::SystemColors::Window;
+			this->button2->Location = System::Drawing::Point(780, 158);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(331, 75);
+			this->button2->TabIndex = 92;
+			this->button2->Text = L"Новая игра";
+			this->button2->UseVisualStyleBackColor = false;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
+			// button3
+			// 
+			this->button3->BackColor = System::Drawing::Color::Gray;
+			this->button3->FlatAppearance->BorderSize = 0;
+			this->button3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button3->ForeColor = System::Drawing::SystemColors::Window;
+			this->button3->Location = System::Drawing::Point(780, 255);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(331, 75);
+			this->button3->TabIndex = 93;
+			this->button3->Text = L"Проверить";
+			this->button3->UseVisualStyleBackColor = false;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -1535,6 +1588,9 @@ namespace sudokuwinforms {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(69)), static_cast<System::Int32>(static_cast<System::Byte>(69)),
 				static_cast<System::Int32>(static_cast<System::Byte>(69)));
 			this->ClientSize = System::Drawing::Size(1148, 857);
+			this->Controls->Add(this->button3);
+			this->Controls->Add(this->button2);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label91);
 			this->Controls->Add(this->label82);
 			this->Controls->Add(this->label83);
@@ -1737,15 +1793,16 @@ namespace sudokuwinforms {
 			}
 		}
 	}
-	void completoin_array_visible(array<bool,2>^ &arr)
+	array<bool,2>^ completoin_array_visible()
 	{
 		Random^ random = gcnew Random();
+		array<bool, 2>^ arr;
 		int value = random->Next(0, 6);
 		if (value == 0)
 		{
 			arr = gcnew array<bool, 2>(9, 9)
 			{
-				{0, 1, 0, 0, 0, 1, 0, 1, 0},
+				{ 0,1,0,0,0,1,0,1,0} ,
 				{ 1,0,1,0,1,0,0,0,1 },
 				{ 0,1,0,0,0,1,0,0,0 },
 				{ 0,0,0,0,0,0,1,0,1 },
@@ -1760,16 +1817,87 @@ namespace sudokuwinforms {
 		{
 			arr = gcnew array<bool, 2>(9, 9)
 			{
-
+				{0,0,1,0,1,0,1,0,0},
+				{1,0,0,0,1,0,0,0,1},
+				{0,1,0,1,0,1,0,1,0},
+				{0,0,1,0,0,0,1,0,0},
+				{1,0,0,0,0,0,0,0,1},
+				{0,0,1,0,0,0,1,0,0},
+				{0,1,0,1,0,1,0,1,0},
+				{1,0,0,0,1,0,0,0,1},
+				{0,0,1,0,1,0,1,0,0},
 			};
 		}
+		if (value == 2)
+		{
+			arr = gcnew array<bool, 2>(9, 9)
+			{
+				{1,1,0,0,1,0,1,1,1},
+				{1,1,0,0,0,0,0,0,1},
+				{1,1,0,1,1,0,0,0,1},
+				{1,0,0,0,0,0,1,0,0},
+				{0,1,0,0,1,0,0,1,0},
+				{0,0,1,0,0,0,0,0,1},
+				{1,0,0,0,1,1,0,1,1},
+				{1,0,0,0,0,0,0,1,1},
+				{1,1,1,0,1,0,0,1,1},
+			};
+		}
+		if (value == 3)
+		{
+			arr = gcnew array<bool, 2>(9, 9)
+			{
+				{0,1,1,0,0,0,0,1,0},
+				{1,0,1,0,0,0,1,0,0},
+				{1,0,0,0,0,1,0,1,0},
+				{0,1,1,0,1,0,1,0,0},
+				{0,0,0,1,0,1,0,0,0},
+				{0,0,1,0,1,0,1,1,0},
+				{0,1,0,1,0,0,0,0,1},
+				{0,0,1,0,0,0,1,0,1},
+				{0,1,0,0,0,0,1,1,0},
+			};
+		}
+		if (value == 4)
+		{
+			arr = gcnew array<bool, 2>(9, 9)
+			{
+				{1,1,0,0,1,0,0,1,1},
+				{1,1,0,0,0,1,0,1,1},
+				{0,1,0,0,0,1,1,0,0},
+				{1,1,0,1,1,0,1,0,0},
+				{1,0,0,1,0,0,1,0,0},
+				{0,0,0,1,0,1,0,1,0},
+				{0,0,0,0,1,1,0,1,1},
+				{0,0,0,1,1,0,0,0,1},
+				{1,1,0,0,0,0,0,0,1},
+			};
+		}
+		if (value == 5)
+		{
+			arr = gcnew array<bool, 2>(9, 9)
+			{
+				{0,1,0,0,0,0,1,0,0},
+				{0,0,0,0,1,1,0,1,0},
+				{0,0,1,1,1,0,0,1,0},
+				{0,1,1,0,0,0,0,1,0},
+				{1,0,0,1,0,1,0,0,1},
+				{0,1,0,0,0,0,1,1,0},
+				{0,1,0,0,1,1,1,0,0},
+				{0,1,0,1,1,0,0,0,0},
+				{0,0,1,0,0,0,0,1,0},
+			};
+		}
+		return arr;
 	}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		int size = 9;
 		int value = 1;
 		int count = 1;
 		int start_value = 1;
+		int index_field = 0;
 		array<int, 2>^ field = gcnew array<int, 2>(size, size);
+		array_visible = gcnew array<bool, 2>(9, 9);
 		Random^ random = gcnew Random();
 		for (int i = 0;i < size;i++)
 		{
@@ -1806,6 +1934,18 @@ namespace sudokuwinforms {
 			{13,14,15,60,59,58,87,86,85},
 			{10,11,12,63,62,61,90,89,88},
 		};
+		array_visible = completoin_array_visible();
+		for (int i = 0;i < 9;i++)
+		{
+			for (int j = 0;j < 9;j++)
+			{
+				if (array_visible[i, j] == true)
+				{
+					label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i,j], true)[0]);
+					label_color->Text = Convert::ToString(field[i, j]);
+				}
+			}
+		}
 	}
     private: System::Void Click_field(System::Object^ sender, System::EventArgs^ e) {
 		label_field = safe_cast<Label^>(sender);
@@ -1853,8 +1993,76 @@ namespace sudokuwinforms {
 		label_color->BackColor = Color::FromArgb(105, 105, 105);
     }
 	private: System::Void Click_value(System::Object^ sender, System::EventArgs^ e) {
-		label_value = safe_cast<Label^>(sender);
-		label_field->Text = label_value->Text;
+		number_label = (Convert::ToInt32(label_field->Name[5]) - 48) * 10 + (Convert::ToInt32(label_field->Name[6]) - 48);
+		poz_x = 99;
+		poz_y = 99;
+		for (int i = 0;i < 9;i++)
+		{
+			for (int j = 0;j < 9;j++)
+			{
+				if (arr_label[i, j] == number_label)
+				{
+					poz_x = i;
+					poz_y = j;
+					break;
+				}
+			}
+			if (poz_x != 99 && poz_y != 99)
+			{
+				break;
+			}
+		}
+		if (array_visible[poz_x, poz_y]!=true)
+		{
+			label_value = safe_cast<Label^>(sender);
+			label_field->Text = label_value->Text;
+			label_field->ForeColor = Color::Blue;
+		}
+		else
+		{
+			MessageBox::Show(this, "невозможно изменить готовое значение", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
-	};
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		number_label = (Convert::ToInt32(label_field->Name[5]) - 48) * 10 + (Convert::ToInt32(label_field->Name[6]) - 48);
+		poz_x = 99;
+		poz_y = 99;
+		for (int i = 0;i < 9;i++)
+		{
+			for (int j = 0;j < 9;j++)
+			{
+				if (arr_label[i, j] == number_label)
+				{
+					poz_x = i;
+					poz_y = j;
+					break;
+				}
+			}
+			if (poz_x != 99 && poz_y != 99)
+			{
+				break;
+			}
+		}
+		if (array_visible[poz_x, poz_y] != true)
+		{
+			label_field->Text = ".";
+			label_field->ForeColor = Color::White;
+		}
+		else
+		{
+			MessageBox::Show(this, "невозможно очистить готовое значение", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	for (int i = 0;i < 9;i++)
+	{
+		for (int j = 0;j < 9;j++)
+		{
+			label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+			label_color->Text = ".";
+			label_color->ForeColor = Color::White;
+		}
+	}
+}
+};
 }
