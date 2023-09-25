@@ -135,10 +135,13 @@ namespace sudokuwinforms {
 	private: array<bool, 2>^ array_visible;
 	private: array<int, 2>^ field_for_check;
 	private: int number_label;
+	private: System::Windows::Forms::Button^ button4;
 	private: int index = 0;
 	private: int poz_x = 99;
 	private: int poz_y = 99;
 	private: int count_point = 0;
+	private: int count_hint = 0;
+	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	protected:
 		void OnPaint(PaintEventArgs^ e) override
 		{
@@ -168,6 +171,7 @@ namespace sudokuwinforms {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -262,6 +266,9 @@ namespace sudokuwinforms {
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->button4 = (gcnew System::Windows::Forms::Button());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -1584,6 +1591,32 @@ namespace sudokuwinforms {
 			this->button3->UseVisualStyleBackColor = false;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
+			// button4
+			// 
+			this->button4->BackColor = System::Drawing::Color::Gray;
+			this->button4->FlatAppearance->BorderSize = 0;
+			this->button4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button4->ForeColor = System::Drawing::SystemColors::Window;
+			this->button4->Location = System::Drawing::Point(780, 356);
+			this->button4->Name = L"button4";
+			this->button4->Size = System::Drawing::Size(331, 75);
+			this->button4->TabIndex = 94;
+			this->button4->Text = L"Подсказка";
+			this->button4->UseVisualStyleBackColor = false;
+			this->button4->Click += gcnew System::EventHandler(this, &MyForm::button4_Click);
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(811, 455);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(250, 250);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox1->TabIndex = 95;
+			this->pictureBox1->TabStop = false;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -1591,6 +1624,8 @@ namespace sudokuwinforms {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(69)), static_cast<System::Int32>(static_cast<System::Byte>(69)),
 				static_cast<System::Int32>(static_cast<System::Byte>(69)));
 			this->ClientSize = System::Drawing::Size(1148, 857);
+			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->button4);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
@@ -1688,6 +1723,7 @@ namespace sudokuwinforms {
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -2026,6 +2062,17 @@ namespace sudokuwinforms {
 			{
 				for (int j = 0;j < 9;j++)
 				{
+					label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+					if (label_color->BackColor == Color::FromArgb(90,90,90))
+					{
+						label_color->BackColor = Color::FromArgb(128, 128, 128);
+					}
+				}
+			}
+			for (int i = 0;i < 9;i++)
+			{
+				for (int j = 0;j < 9;j++)
+				{
 					label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i,j], true)[0]);
 					if (label_color->Text != ".")
 					{
@@ -2168,6 +2215,48 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 		{
 			MessageBox::Show(this, "Поздравляем! Вы выйграли", "Victory", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
+	}
+}
+private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (count_hint < 3)
+	{
+		bool check = false;
+		Random^ random = gcnew Random();
+		int value_for_hint = 0;
+		while (check == false)
+		{
+			value_for_hint = random->Next(10,91);
+			poz_x = 99;
+			poz_y = 90;
+			for (int i = 0;i < 9;i++)
+			{
+				for (int j = 0;j < 9;j++)
+				{
+					if (arr_label[i, j] == value_for_hint)
+					{
+						poz_x = i;
+						poz_y = j;
+						break;
+					}
+				}
+				if (poz_x != 99 && poz_y != 99)
+				{
+					break;
+				}
+			}
+			if (array_visible[poz_x, poz_y] == false)
+			{
+				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[poz_x,poz_y], true)[0]);
+				label_color->Text = Convert::ToString(field_for_check[poz_x, poz_y]);
+				check = true;
+				count_hint++;
+			}
+		}
+	}
+
+	else
+	{
+		MessageBox::Show(this, "Исчерпано возможное количество подсказок", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 }
 };
