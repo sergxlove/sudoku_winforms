@@ -2257,7 +2257,7 @@ private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e
 	else
 	{
 		MessageBox::Show(this, "Исчерпано возможное количество подсказок", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
-	}
+	} 
 }
 };
 }
