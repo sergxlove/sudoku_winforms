@@ -141,7 +141,14 @@ namespace sudokuwinforms {
 	private: int poz_y = 99;
 	private: int count_point = 0;
 	private: int count_hint = 0;
+	private: int seconds = 0;
+	private: int minutes = 0;
+	private: System::Windows::Forms::Label^ label92;
+	private: System::Windows::Forms::Label^ label93;
+	private: System::Windows::Forms::Label^ label94;
+	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	protected:
 	protected:
 		void OnPaint(PaintEventArgs^ e) override
 		{
@@ -156,13 +163,13 @@ namespace sudokuwinforms {
 			g->DrawLine(pen, 30, 210, 565, 210);
 			g->DrawLine(pen, 30, 407, 565, 407);
 		}
-	protected:
-
+private: System::ComponentModel::IContainer^ components;
+protected:
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -171,6 +178,7 @@ namespace sudokuwinforms {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
@@ -268,6 +276,10 @@ namespace sudokuwinforms {
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->button4 = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->label92 = (gcnew System::Windows::Forms::Label());
+			this->label93 = (gcnew System::Windows::Forms::Label());
+			this->label94 = (gcnew System::Windows::Forms::Label());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -1537,7 +1549,7 @@ namespace sudokuwinforms {
 			this->label91->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->label91->ForeColor = System::Drawing::SystemColors::Window;
-			this->label91->Location = System::Drawing::Point(795, 30);
+			this->label91->Location = System::Drawing::Point(795, 10);
 			this->label91->Name = L"label91";
 			this->label91->Size = System::Drawing::Size(295, 91);
 			this->label91->TabIndex = 90;
@@ -1567,7 +1579,7 @@ namespace sudokuwinforms {
 			this->button2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->button2->ForeColor = System::Drawing::SystemColors::Window;
-			this->button2->Location = System::Drawing::Point(780, 158);
+			this->button2->Location = System::Drawing::Point(780, 207);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(331, 75);
 			this->button2->TabIndex = 92;
@@ -1583,7 +1595,7 @@ namespace sudokuwinforms {
 			this->button3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->button3->ForeColor = System::Drawing::SystemColors::Window;
-			this->button3->Location = System::Drawing::Point(780, 255);
+			this->button3->Location = System::Drawing::Point(780, 299);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(331, 75);
 			this->button3->TabIndex = 93;
@@ -1599,7 +1611,7 @@ namespace sudokuwinforms {
 			this->button4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->button4->ForeColor = System::Drawing::SystemColors::Window;
-			this->button4->Location = System::Drawing::Point(780, 356);
+			this->button4->Location = System::Drawing::Point(780, 390);
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(331, 75);
 			this->button4->TabIndex = 94;
@@ -1610,12 +1622,53 @@ namespace sudokuwinforms {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(811, 455);
+			this->pictureBox1->Location = System::Drawing::Point(811, 481);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(250, 250);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 95;
 			this->pictureBox1->TabStop = false;
+			// 
+			// label92
+			// 
+			this->label92->AutoSize = true;
+			this->label92->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 28.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label92->ForeColor = System::Drawing::SystemColors::Window;
+			this->label92->Location = System::Drawing::Point(977, 117);
+			this->label92->Name = L"label92";
+			this->label92->Size = System::Drawing::Size(75, 54);
+			this->label92->TabIndex = 96;
+			this->label92->Text = L"00";
+			// 
+			// label93
+			// 
+			this->label93->AutoSize = true;
+			this->label93->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 28.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label93->ForeColor = System::Drawing::SystemColors::Window;
+			this->label93->Location = System::Drawing::Point(854, 117);
+			this->label93->Name = L"label93";
+			this->label93->Size = System::Drawing::Size(75, 54);
+			this->label93->TabIndex = 97;
+			this->label93->Text = L"00";
+			// 
+			// label94
+			// 
+			this->label94->AutoSize = true;
+			this->label94->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 28.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label94->ForeColor = System::Drawing::SystemColors::Window;
+			this->label94->Location = System::Drawing::Point(935, 117);
+			this->label94->Name = L"label94";
+			this->label94->Size = System::Drawing::Size(36, 54);
+			this->label94->TabIndex = 98;
+			this->label94->Text = L":";
+			// 
+			// timer1
+			// 
+			this->timer1->Interval = 1000;
+			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
 			// 
 			// MyForm
 			// 
@@ -1624,6 +1677,9 @@ namespace sudokuwinforms {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(69)), static_cast<System::Int32>(static_cast<System::Byte>(69)),
 				static_cast<System::Int32>(static_cast<System::Byte>(69)));
 			this->ClientSize = System::Drawing::Size(1148, 857);
+			this->Controls->Add(this->label94);
+			this->Controls->Add(this->label93);
+			this->Controls->Add(this->label92);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->button4);
 			this->Controls->Add(this->button3);
@@ -1987,6 +2043,7 @@ namespace sudokuwinforms {
 				}
 			}
 		}
+		timer1->Start();
 	}
     private: System::Void Click_field(System::Object^ sender, System::EventArgs^ e) {
 		label_field = safe_cast<Label^>(sender);
@@ -2120,6 +2177,11 @@ namespace sudokuwinforms {
 		}
 	}
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	timer1->Stop();
+	seconds = 0;
+	minutes = 0;
+	label92->Text = "00";
+	label93->Text = "00";
 	int size = 9;
 	int value = 1;
 	int count = 1;
@@ -2172,7 +2234,7 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 			}
 		}
 	}
-	
+	timer1->Start();
 }
 private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 	count_point = 0;
@@ -2258,6 +2320,20 @@ private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e
 	{
 		MessageBox::Show(this, "Исчерпано возможное количество подсказок", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	} 
+}
+private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+	seconds++;
+	if (seconds == 60)
+	{
+		minutes++;
+		label93->Text = Convert::ToString(minutes);
+		seconds = 0;
+		label92->Text = Convert::ToString(seconds);
+	}
+	else
+	{
+		label92->Text = Convert::ToString(seconds);
+	}
 }
 };
 }
