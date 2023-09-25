@@ -133,10 +133,12 @@ namespace sudokuwinforms {
 	private: System::Windows::Forms::Button^ button3;
 	private: array<int, 2>^ arr_label;
 	private: array<bool, 2>^ array_visible;
+	private: array<int, 2>^ field_for_check;
 	private: int number_label;
 	private: int index = 0;
 	private: int poz_x = 99;
 	private: int poz_y = 99;
+	private: int count_point = 0;
 	protected:
 		void OnPaint(PaintEventArgs^ e) override
 		{
@@ -1580,6 +1582,7 @@ namespace sudokuwinforms {
 			this->button3->TabIndex = 93;
 			this->button3->Text = L"Проверить";
 			this->button3->UseVisualStyleBackColor = false;
+			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
 			// MyForm
 			// 
@@ -1898,6 +1901,7 @@ namespace sudokuwinforms {
 		int index_field = 0;
 		array<int, 2>^ field = gcnew array<int, 2>(size, size);
 		array_visible = gcnew array<bool, 2>(9, 9);
+		field_for_check = gcnew array<int, 2>(9, 9);
 		Random^ random = gcnew Random();
 		for (int i = 0;i < size;i++)
 		{
@@ -1923,6 +1927,7 @@ namespace sudokuwinforms {
 			}
 		}
 		sort_field(field);
+		field_for_check = field;
 		arr_label = gcnew array<int, 2>(9, 9) {
 			{30,29,28,39,38,37,66,65,64},
 			{33,32,31,42,41,40,69,68,67},
@@ -1990,7 +1995,7 @@ namespace sudokuwinforms {
 			label_color->BackColor = Color::LightGray;
 		}
 		label_color = dynamic_cast<Label^>(this->Controls->Find("label" + number_label, true)[0]);
-		label_color->BackColor = Color::FromArgb(105, 105, 105);
+		label_color->BackColor = Color::FromArgb(90, 90, 90);
     }
 	private: System::Void Click_value(System::Object^ sender, System::EventArgs^ e) {
 		number_label = (Convert::ToInt32(label_field->Name[5]) - 48) * 10 + (Convert::ToInt32(label_field->Name[6]) - 48);
@@ -2017,6 +2022,20 @@ namespace sudokuwinforms {
 			label_value = safe_cast<Label^>(sender);
 			label_field->Text = label_value->Text;
 			label_field->ForeColor = Color::Blue;
+			for (int i = 0;i < 9;i++)
+			{
+				for (int j = 0;j < 9;j++)
+				{
+					label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i,j], true)[0]);
+					if (label_color->Text != ".")
+					{
+						if (label_value->Text == label_color->Text)
+						{
+							label_color->BackColor = Color::FromArgb(90, 90, 90);
+						}
+					}
+				}
+			}
 		}
 		else
 		{
@@ -2054,6 +2073,12 @@ namespace sudokuwinforms {
 		}
 	}
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	int size = 9;
+	int value = 1;
+	int count = 1;
+	int start_value = 1;
+	array<int, 2>^ field = gcnew array<int, 2>(size, size);
+	Random^ random = gcnew Random();
 	for (int i = 0;i < 9;i++)
 	{
 		for (int j = 0;j < 9;j++)
@@ -2061,6 +2086,87 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 			label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
 			label_color->Text = ".";
 			label_color->ForeColor = Color::White;
+		}
+	}
+	for (int i = 0;i < size;i++)
+	{
+		value = start_value;
+		for (int j = 0;j < size;j++)
+		{
+			if (value == 10)
+			{
+				value = 1;
+			}
+			field[i, j] = value;
+			value++;
+		}
+		if (count == 3)
+		{
+			count = 1;
+			start_value -= 5;
+		}
+		else
+		{
+			start_value += 3;
+			count++;
+		}
+	}
+	sort_field(field);
+	field_for_check = field;
+	array_visible = completoin_array_visible();
+	for (int i = 0;i < 9;i++)
+	{
+		for (int j = 0;j < 9;j++)
+		{
+			if (array_visible[i, j] == true)
+			{
+				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+				label_color->Text = Convert::ToString(field[i, j]);
+			}
+		}
+	}
+	
+}
+private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	count_point = 0;
+	for (int i = 0;i < 9;i++)
+	{
+		for (int j = 0;j < 9;j++)
+		{
+			label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+			if (label_color->Text != "."&&array_visible[i,j]!=true)
+			{
+				if (label_color->Text == Convert::ToString(field_for_check[i, j]))
+				{
+					label_color->ForeColor = Color::Green;
+				}
+				else
+				{
+					label_color->ForeColor = Color::Red;
+				}
+			}
+			if (label_color->Text == ".")
+			{
+				count_point++;
+			}
+		}
+	}
+	if (count_point == 0)
+	{
+		for (int i = 0;i < 9;i++)
+		{
+			for (int j = 0;j < 9;j++)
+			{
+				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+				if (label_color->ForeColor == Color::Red)
+				{
+					count_point++;
+				}
+			}
+		}
+		if (count_point == 0)
+		{
+			MessageBox::Show(this, "Поздравляем! Вы выйграли", "Victory", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 }
