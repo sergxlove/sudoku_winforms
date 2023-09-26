@@ -18,6 +18,7 @@ namespace sudokuwinforms {
 		MyForm(void)
 		{
 			InitializeComponent();
+			this->KeyPreview = true;
 			//
 			//TODO: добавьте код конструктора
 			//
@@ -148,6 +149,7 @@ namespace sudokuwinforms {
 	private: System::Windows::Forms::Label^ label94;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: int label_value_for_keys = 0;
 	protected:
 	protected:
 		void OnPaint(PaintEventArgs^ e) override
@@ -1776,9 +1778,11 @@ protected:
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"MyForm";
-			this->Text = L"MyForm";
+			this->Text = L"sudoku";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::Form1_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -2315,7 +2319,6 @@ private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e
 			}
 		}
 	}
-
 	else
 	{
 		MessageBox::Show(this, "Исчерпано возможное количество подсказок", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -2329,10 +2332,127 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 		label93->Text = Convert::ToString(minutes);
 		seconds = 0;
 		label92->Text = Convert::ToString(seconds);
+		if (minutes > 40)
+		{
+			label92->ForeColor = Color::Red;
+			label93->ForeColor = Color::Red;
+		}
 	}
 	else
 	{
 		label92->Text = Convert::ToString(seconds);
+	}
+}
+private: System::Void Form1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+{
+	number_label = (Convert::ToInt32(label_field->Name[5]) - 48) * 10 + (Convert::ToInt32(label_field->Name[6]) - 48);
+	poz_x = 99;
+	poz_y = 99;
+	for (int i = 0;i < 9;i++)
+	{
+		for (int j = 0;j < 9;j++)
+		{
+			if (arr_label[i, j] == number_label)
+			{
+				poz_x = i;
+				poz_y = j;
+				break;
+			}
+		}
+		if (poz_x != 99 && poz_y != 99)
+		{
+			break;
+		}
+	}
+	if (array_visible[poz_x, poz_y] != true)
+	{
+		while (true)
+		{
+			if (e->KeyCode == Keys::D1)
+			{
+				label_field->Text = Convert::ToString(1);
+				label_value_for_keys = 1;
+				break;
+			}
+			if (e->KeyCode == Keys::D2)
+			{
+				label_field->Text = Convert::ToString(2);
+				label_value_for_keys = 2;
+				break;
+			}
+			if (e->KeyCode == Keys::D3)
+			{
+				label_field->Text = Convert::ToString(3);
+				label_value_for_keys = 3;
+				break;
+			}
+			if (e->KeyCode == Keys::D4)
+			{
+				label_field->Text = Convert::ToString(4);
+				label_value_for_keys = 4;
+				break;
+			}
+			if (e->KeyCode == Keys::D5)
+			{
+				label_field->Text = Convert::ToString(5);
+				label_value_for_keys = 5;
+				break;
+			}
+			if (e->KeyCode == Keys::D6)
+			{
+				label_field->Text = Convert::ToString(6);
+				label_value_for_keys = 6;
+				break;
+			}
+			if (e->KeyCode == Keys::D7)
+			{
+				label_field->Text = Convert::ToString(7);
+				label_value_for_keys = 7;
+				break;
+			}
+			if (e->KeyCode == Keys::D8)
+			{
+				label_field->Text = Convert::ToString(8);
+				label_value_for_keys = 8;
+				break;
+			}
+			if (e->KeyCode == Keys::D9)
+			{
+				label_field->Text = Convert::ToString(9);
+				label_value_for_keys = 9;
+				break;
+			}
+		}
+		label_field->ForeColor = Color::Blue;
+		for (int i = 0;i < 9;i++)
+		{
+			for (int j = 0;j < 9;j++)
+			{
+				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+				if (label_color->BackColor == Color::FromArgb(90, 90, 90))
+				{
+					label_color->BackColor = Color::FromArgb(128, 128, 128);
+				}
+			}
+		}
+		for (int i = 0;i < 9;i++)
+		{
+			for (int j = 0;j < 9;j++)
+			{
+				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+				if (label_color->Text != ".")
+				{
+					if (label_color->Text==Convert::ToString(label_value_for_keys))
+					{
+						label_color->BackColor = Color::FromArgb(90, 90, 90);
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		MessageBox::Show(this, "невозможно изменить готовое значение", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 }
 };
