@@ -2280,6 +2280,7 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 		if (count_point == 0)
 		{
 			MessageBox::Show(this, "Поздравляем! Вы выйграли", "Victory", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			timer1->Stop();
 		}
 	}
 }
@@ -2329,9 +2330,23 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 	if (seconds == 60)
 	{
 		minutes++;
-		label93->Text = Convert::ToString(minutes);
+		if (minutes < 10)
+		{
+			label93->Text = "0" + Convert::ToString(minutes);
+		}
+		else
+		{
+			label93->Text = Convert::ToString(minutes);
+		}
 		seconds = 0;
-		label92->Text = Convert::ToString(seconds);
+		if (seconds < 10)
+		{
+			label92->Text = "0" + Convert::ToString(seconds);
+		}
+		else
+		{
+			label92->Text = Convert::ToString(seconds);
+		}
 		if (minutes > 40)
 		{
 			label92->ForeColor = Color::Red;
@@ -2340,7 +2355,14 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 	}
 	else
 	{
-		label92->Text = Convert::ToString(seconds);
+		if (seconds < 10)
+		{
+			label92->Text = "0" + Convert::ToString(seconds);
+		}
+		else
+		{
+			label92->Text = Convert::ToString(seconds);
+		}
 	}
 }
 private: System::Void Form1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
