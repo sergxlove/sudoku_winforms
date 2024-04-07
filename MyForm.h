@@ -2186,6 +2186,7 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	minutes = 0;
 	label92->Text = "00";
 	label93->Text = "00";
+	count_hint = 0;
 	int size = 9;
 	int value = 1;
 	int count = 1;
@@ -2367,115 +2368,119 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 }
 private: System::Void Form1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 {
-	number_label = (Convert::ToInt32(label_field->Name[5]) - 48) * 10 + (Convert::ToInt32(label_field->Name[6]) - 48);
-	poz_x = 99;
-	poz_y = 99;
-	for (int i = 0;i < 9;i++)
+	if (label_field != nullptr)
 	{
-		for (int j = 0;j < 9;j++)
-		{
-			if (arr_label[i, j] == number_label)
-			{
-				poz_x = i;
-				poz_y = j;
-				break;
-			}
-		}
-		if (poz_x != 99 && poz_y != 99)
-		{
-			break;
-		}
-	}
-	if (array_visible[poz_x, poz_y] != true)
-	{
-		while (true)
-		{
-			if (e->KeyCode == Keys::D1)
-			{
-				label_field->Text = Convert::ToString(1);
-				label_value_for_keys = 1;
-				break;
-			}
-			if (e->KeyCode == Keys::D2)
-			{
-				label_field->Text = Convert::ToString(2);
-				label_value_for_keys = 2;
-				break;
-			}
-			if (e->KeyCode == Keys::D3)
-			{
-				label_field->Text = Convert::ToString(3);
-				label_value_for_keys = 3;
-				break;
-			}
-			if (e->KeyCode == Keys::D4)
-			{
-				label_field->Text = Convert::ToString(4);
-				label_value_for_keys = 4;
-				break;
-			}
-			if (e->KeyCode == Keys::D5)
-			{
-				label_field->Text = Convert::ToString(5);
-				label_value_for_keys = 5;
-				break;
-			}
-			if (e->KeyCode == Keys::D6)
-			{
-				label_field->Text = Convert::ToString(6);
-				label_value_for_keys = 6;
-				break;
-			}
-			if (e->KeyCode == Keys::D7)
-			{
-				label_field->Text = Convert::ToString(7);
-				label_value_for_keys = 7;
-				break;
-			}
-			if (e->KeyCode == Keys::D8)
-			{
-				label_field->Text = Convert::ToString(8);
-				label_value_for_keys = 8;
-				break;
-			}
-			if (e->KeyCode == Keys::D9)
-			{
-				label_field->Text = Convert::ToString(9);
-				label_value_for_keys = 9;
-				break;
-			}
-		}
-		label_field->ForeColor = Color::Blue;
+		number_label = (Convert::ToInt32(label_field->Name[5]) - 48) * 10 + (Convert::ToInt32(label_field->Name[6]) - 48);
+		poz_x = 99;
+		poz_y = 99;
 		for (int i = 0;i < 9;i++)
 		{
 			for (int j = 0;j < 9;j++)
 			{
-				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
-				if (label_color->BackColor == Color::FromArgb(90, 90, 90))
+				if (arr_label[i, j] == number_label)
 				{
-					label_color->BackColor = Color::FromArgb(128, 128, 128);
+					poz_x = i;
+					poz_y = j;
+					break;
 				}
 			}
-		}
-		for (int i = 0;i < 9;i++)
-		{
-			for (int j = 0;j < 9;j++)
+			if (poz_x != 99 && poz_y != 99)
 			{
-				label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
-				if (label_color->Text != ".")
+				break;
+			}
+		}
+		if (array_visible[poz_x, poz_y] != true)
+		{
+			while (true)
+			{
+				if (e->KeyCode == Keys::D1)
 				{
-					if (label_color->Text==Convert::ToString(label_value_for_keys))
+					label_field->Text = Convert::ToString(1);
+					label_value_for_keys = 1;
+					break;
+				}
+				if (e->KeyCode == Keys::D2)
+				{
+					label_field->Text = Convert::ToString(2);
+					label_value_for_keys = 2;
+					break;
+				}
+				if (e->KeyCode == Keys::D3)
+				{
+					label_field->Text = Convert::ToString(3);
+					label_value_for_keys = 3;
+					break;
+				}
+				if (e->KeyCode == Keys::D4)
+				{
+					label_field->Text = Convert::ToString(4);
+					label_value_for_keys = 4;
+					break;
+				}
+				if (e->KeyCode == Keys::D5)
+				{
+					label_field->Text = Convert::ToString(5);
+					label_value_for_keys = 5;
+					break;
+				}
+				if (e->KeyCode == Keys::D6)
+				{
+					label_field->Text = Convert::ToString(6);
+					label_value_for_keys = 6;
+					break;
+				}
+				if (e->KeyCode == Keys::D7)
+				{
+					label_field->Text = Convert::ToString(7);
+					label_value_for_keys = 7;
+					break;
+				}
+				if (e->KeyCode == Keys::D8)
+				{
+					label_field->Text = Convert::ToString(8);
+					label_value_for_keys = 8;
+					break;
+				}
+				if (e->KeyCode == Keys::D9)
+				{
+					label_field->Text = Convert::ToString(9);
+					label_value_for_keys = 9;
+					break;
+				}
+				break;
+			}
+			label_field->ForeColor = Color::Blue;
+			for (int i = 0;i < 9;i++)
+			{
+				for (int j = 0;j < 9;j++)
+				{
+					label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+					if (label_color->BackColor == Color::FromArgb(90, 90, 90))
 					{
-						label_color->BackColor = Color::FromArgb(90, 90, 90);
+						label_color->BackColor = Color::FromArgb(128, 128, 128);
+					}
+				}
+			}
+			for (int i = 0;i < 9;i++)
+			{
+				for (int j = 0;j < 9;j++)
+				{
+					label_color = dynamic_cast<Label^>(this->Controls->Find("label" + arr_label[i, j], true)[0]);
+					if (label_color->Text != ".")
+					{
+						if (label_color->Text==Convert::ToString(label_value_for_keys))
+						{
+							label_color->BackColor = Color::FromArgb(90, 90, 90);
+						}
 					}
 				}
 			}
 		}
+		else
+		{
+			MessageBox::Show(this, "невозможно изменить готовое значение", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
-	else
-	{
-		MessageBox::Show(this, "невозможно изменить готовое значение", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
-}
 };
 }
