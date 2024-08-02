@@ -18,12 +18,12 @@ RU: Судоку - это популярная логическая игра, в
 ```git
 git clone git@github.com:sergxlove/sudoku_winforms.git
 ```
-Либо скачать последнюю версию с блока release
+Либо скачать последнюю версию с блока [release](https://github.com/sergxlove/sudoku_winforms/releases/tag/v1.0.0)
 
 ## System requirements / Системные требования
 Operating system: windows 7 and high <br>
 Processor: 1 GHz and high <br>
 RAM memory: 512 Mb and high <br>
-Free hard disk space: 50 Mb <br>
+Free hard disk space: 50 Mb and more <br>
 Availability .NET Framework <br>
 
